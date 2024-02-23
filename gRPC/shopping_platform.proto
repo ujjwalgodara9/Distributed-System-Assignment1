@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package shopping_platform;
+
+// Seller service definition
+// service SellerService {
+//   rpc RegisterSeller(RegisterSellerRequest) returns (SellerResponse);
+//   rpc SellItem(SellItemRequest) returns (SellerResponse);
+//   rpc UpdateItem(UpdateItemRequest) returns (SellerResponse);
+//   rpc DeleteItem(DeleteItemRequest) returns (SellerResponse);
+//   rpc DisplaySellerItems(DisplayItemsRequest) returns (DisplayItemsResponse);
+//   rpc NotifySeller(ItemNotification) returns (Empty);
+// }
+
+// Seller service definition
+service SellerService {
+  rpc Login(CheckSellerRequest) returns (CheckSellerResponse);
+  rpc RegisterSeller(RegisterSellerRequest) returns (SellerResponse);
+  rpc SellItem(SellItemRequest) returns (SellerResponse);
+  rpc UpdateItem(UpdateItemRequest) returns (SellerResponse);
+  rpc DeleteItem(DeleteItemRequest) returns (SellerResponse);
+  rpc DisplayItems(DisplayItemsRequest) returns (DisplayItemsResponse); // Add this line
+  rpc NotifySeller(Notification) returns (Empty);
+  
+}
+
+
+// Buyer service definition
+service BuyerService {
+  rpc RegisterBuyer(RegisterBuyerRequest) returns (RegisterBuyerResponse);
+  rpc SearchItem(SearchItemRequest) returns (SearchItemResponse);
+  rpc BuyItem(BuyItemRequest) returns (BuyerResponse);
+  rpc AddToWishlist(AddToWishlistRequest) returns (BuyerResponse);
+  rpc RateItem(RateItemRequest) returns (BuyerResponse);
+  rpc NotifyBuyer(ItemNotification) returns (Empty); 
+}
+message Notification{
+  string status=1;
+}
+//Checking whether Seller is Registered or Not
+message RegisterBuyerRequest{
+  string uuid=1;
+  string address=2;
+}
+message RegisterBuyerResponse{
+  string status=1;
+}
+message CheckSellerRequest{
+  string uuid=1;
+}
+message CheckSellerResponse{
+  string status=1;
+}
+message Nothing{}
+// Message for registering a seller
+message RegisterSellerRequest {
+  string address = 1;
+  string uuid = 2;
+}
+
+// Response message for seller operations
+message SellerResponse {
+  string status = 1;
+  int32 item_id = 2;
+}
+
+// Message for selling an item
+message SellItemRequest {
+  string name = 1;
+  Category category = 2;
+  int32 quantity = 3;
+  string description = 4;
+  int32 price = 5;
+  string seller_address = 6;
+  string seller_uuid = 7;
+}
+
+// Enumeration for item categories
+enum Category {
+  ELECTRONICS = 0;
+  FASHION = 1;
+  OTHERS = 2;
+}
+
+// Message for updating an item
+message UpdateItemRequest {
+  int32 item_id = 1;
+  int32 price = 2;
+  int32 quantity = 3;
+  string seller_address = 4;
+  string seller_uuid = 5;
+}
+
+// Message for deleting an item
+message DeleteItemRequest {
+  int32 item_id = 1;
+  string seller_address = 2;
+  string seller_uuid = 3;
+}
+
+// Message for requesting to display seller items
+message DisplayItemsRequest {
+  string seller_address = 1;
+  string seller_uuid = 2;
+}
+
+// Response message for displaying seller items
+message DisplayItemsResponse {
+  repeated Item items = 1;
+}
+
+// Message for an individual item
+message Item {
+    
+  int32 id = 1;
+  int32 price = 2;
+  string name = 3;
+  Category category = 4;
+  string description = 5;
+  int32 quantity = 6;
+  double rating = 7;
+  string seller_address = 8;
+  string seller_uuid = 9;
+}
+
+// Message for searching items
+message SearchItemRequest {
+  string name = 1;
+  Category category = 2;
+}
+
+// Response message for search items
+message SearchItemResponse {
+  repeated Item items = 1;
+}
+
+// Message for buying an item
+message BuyItemRequest {
+  int32 item_id = 1;
+  int32 quantity = 2;
+  string buyer_address = 3;
+}
+
+// Response message for buyer operations
+message BuyerResponse {
+  string status = 1;
+}
+
+// Message for adding to wishlist
+message AddToWishlistRequest {
+  int32 item_id = 1;
+  string buyer_address = 2;
+  string buyer_id = 3;
+}
+
+// Message for rating an item
+message RateItemRequest {
+  int32 item_id = 1;
+  string buyer_address = 2;
+  int32 rating = 3;
+}
+
+// Message for item notifications
+message ItemNotification {
+  Item item = 1;
+  string status=2;
+}
+
+// Empty message used for notifications
+message Empty {
+  
+}
