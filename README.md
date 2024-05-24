@@ -22,7 +22,7 @@ Each part of the assignment comes with detailed specifications and requirements.
 1. Clone the repository:
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/ujjwalgodara9/Distributed-System
     ```
 
 2. Install dependencies:
